@@ -1,0 +1,484 @@
+1
+Create table customer (cust_no varchar(5), cust_name varchar(15), age number, phone varchar(10) );
+insert into customer(cust_no,cust_name,age,phone)values('1','ravi',25,'52634189'); 
+insert into customer(cust_no,cust_name,age,phone)values('2','ani',26,' 63544189'); 
+insert into customer(cust_no,cust_name,age,phone)values('3',' jibin', 28, '44025189M');
+insert into customer(cust_no,cust_name,age,phone)values('4','resma',27,'8254879');
+insert into customer(cust_no,cust_name,age,phone)values('5','meena',26,'989644');
+select * from customer;
+ALTER TABLE customer ADD d_birth date;
+ALTER TABLE customer ADD PRIMARY KEY (phone);
+create table cust_phone(cust_name varchar(20),phone varchar(10),FOREIGN KEY(phone) REFERENCES customer);
+ALTER TABLE customer DROP COLUMN age;
+select * from customer;
+ALTER TABLE customer MODIFY cust_name varchar(25);
+truncate table cust_phone;
+ALTER TABLE customer RENAME TO cust;
+drop table cust_phone;
+
+2
+Create table sales_man(salesman_no int,s_name varchar(15) NOT NULL,place varchar(15),phone int unique,constraint pksalesman primary key(salesman_no));
+Create table sales_order (order_no int,order_date date NOT NULL,salesman_no int,del_type varchar(5) ,order_status varchar(10) ,constraint pksalesorder primary key(order_no),constraint fksalesorder foreign key(salesman_no) references sales_man(salesman_no),constraint cksalesorder1 check (del_type='p' or del_type='f'),constraint cksalesorder2 check(order_status='inprocess' or order_status='fullfilled' or order_status='backorder' or order_status='cancelled'));
+
+insert into sales_man(salesman_no ,s_name ,place ,phone)values(1,'intel','palakkad','9547455');
+insert into sales_man(salesman_no ,s_name ,place ,phone)values(2,'wipro','kozhikode','89547455');
+insert into sales_man(salesman_no ,s_name ,place ,phone )values(3,'rolex','malappuram','88547455');
+select * from sales_man;
+insert into sales_order (order_no,order_date,salesman_no,del_type,order_status) values(1,'02-02-2019',1,'f','fullfilled');
+insert into sales_order (order_no,order_date,salesman_no,del_type,order_status) values(2,'12-02-2019',2,'p','inprocess');
+insert into sales_order (order_no,order_date,salesman_no,del_type,order_status) values(3,'02-12-2019',2,'p','cancelled');
+select * from sales_order;
+
+ALTER TABLE sales_order DROP CONSTRAINT fksalesorder;
+ALTER TABLE sales_order DROP CONSTRAINT cksalesorder1;
+
+ALTER TABLE sales_man DROP CONSTRAINT pksalesman;
+
+ALTER TABLE sales_man ADD CONSTRAINT pksalesman primary key(salesman_no);
+
+ALTER TABLE sales_order ADD CONSTRAINT fksalesorder foreign key(salesman_no) references sales_man(salesman_no);
+ALTER TABLE sales_order ADD CONSTRAINT cksalesorder1 check (del_type='p' or del_type='f');
+
+
+
+3
+Create table Hospital (doctorid varchar(15) ,doctorname varchar(15),department varchar(15),qualification varchar(15),experience int);
+insert into Hospital(doctorid,doctorname,department,qualification,experience)values('D001','visakh','skin','MD',5);
+insert into Hospital (doctorid,doctorname,department,qualification,experience)values('D002','anju','ortho','MBBS',6);
+insert into Hospital (doctorid,doctorname,department,qualification,experience)values('D003','akhil','skin','MBBS',4);
+insert into Hospital (doctorid,doctorname,department,qualification,experience)values('D004','vinu','dental','MD',7);
+insert into Hospital (doctorid,doctorname,department,qualification,experience)values('D005','jithu','surgen','MD',4);
+select * from hospital;
+select * from hospital where qualification='MD';
+select * from hospital where EXPERIENCE>5 and qualification!='MD';
+select * from hospital where DEPARTMENT='skin';
+update hospital set experience=5 where doctorid='D003';
+select * from hospital ;
+delete from hospital where doctorid='D005';
+
+
+4
+Create table Bank_customer (accno int, cust_name varchar(15), place varchar(15),constraint pkbankcustomer primary key(accno));
+insert into Bank_customer (accno, cust_name,place)values(100,'nithin','palakkad');
+insert into Bank_customer (accno, cust_name,place)values(101,'sanjay','kozhikode');
+insert into Bank_customer (accno, cust_name,place)values(102,'meenu','malappuram');
+insert into Bank_customer (accno, cust_name,place)values(104,'anju','malappuram');
+
+Create table Deposit(accno int,deposit_no int,damount int,constraint fkdeposit foreign key(accno) references Bank_customer(accno));
+insert into Deposit(accno,deposit_no,damount)values(100,2,15000);
+insert into Deposit(accno,deposit_no,damount)values(101,3,37000);
+insert into Deposit(accno,deposit_no,damount)values(102,4,41000);
+Create table Loan(accno int,loan_no int,Lamount int,constraint fkloan foreign key(accno) references Bank_customer(accno));
+insert into Loan(accno ,loan_no,Lamount )values(100,10,50000);
+insert into Loan(accno ,loan_no,Lamount )values(101,11,20000);
+select * from Bank_customer ;
+select * from Deposit ;
+select * from Loan;
+SELECT Bank_customer.ACCNO,Bank_customer.CUST_NAME,Bank_customer.PLACE,Deposit.DEPOSIT_NO,Deposit.DAMOUNT FROM Bank_customer INNER JOIN Deposit
+ON Bank_customer.ACCNO = Deposit.ACCNO ;
+SELECT Bank_customer.ACCNO,Bank_customer.CUST_NAME,Bank_customer.PLACE,Loan.loan_no,Loan.Lamount FROM Bank_customer INNER JOIN Loan
+ON Bank_customer.ACCNO = Loan.ACCNO;
+SELECT a.ACCNO,a.CUST_NAME,a.PLACE,b.DEPOSIT_NO,c.LOAN_NO FROM Bank_customer a,Deposit b,Loan c WHERE a.ACCNO=b.ACCNO AND a.ACCNO=c.ACCNO;
+SELECT * FROM Bank_customer WHERE NOT EXISTS(SELECT * FROM Loan,deposit WHERE Bank_customer.ACCNO in ( Deposit.ACCNO ,Loan.ACCNO));
+
+
+5
+Create table employee(EmpID int, EName varchar(15),Salary int, Department varchar(15),Age int);
+insert into employee(EmpID,EName,Salary,Department,Age)values(1,'ajith',25000,'purchase',35);
+insert into employee(EmpID,EName,Salary,Department,Age)values(2,'bindu',17000,'sales',26);
+insert into employee(EmpID,EName,Salary,Department,Age)values(3,'nithin',21000,'purchase',28);
+insert into employee(EmpID,EName,Salary,Department,Age)values(4,'rohan',32000,'sales',48);
+insert into employee(EmpID,EName,Salary,Department,Age)values(5,'anita',22000,'packing',28);
+insert into employee(EmpID,EName,Salary,Department,Age)values(6,'kiran',52000,'Manager',56);
+select * from employee;
+select count(*) from employee;
+select Department,max(Age) from employee group by Department;
+SELECT department,avg(age) FROM employee group by department;
+SELECT department,avg(salary) FROM employee group by department;
+SELECT min(salary) FROM employee
+SELECT count(department) as "no: employees in purchase" FROM employee where department='purchase';
+SELECT max(salary) as "highest sal in sales" FROM employee where department='sales';
+SELECT max(salary)-min(salary) from employee;
+
+
+6
+Create table product(Product_code int , Product_Name varchar(15), Category varchar(15), Quantity int, Price int,constraint pkproduct primary key(Product_code));
+insert into product(Product_code,Product_Name,Category, Quantity , Price)values(1,'colgate','paste',150,15);
+insert into product(Product_code,Product_Name,Category, Quantity , Price)values(2,'lux','bathsoap',50,25);
+insert into product(Product_code,Product_Name,Category, Quantity , Price)values(3,'surf','washing powder',10,45);
+insert into product(Product_code,Product_Name,Category, Quantity , Price)values(4,'dove','cream',170,145);
+insert into product(Product_code,Product_Name,Category, Quantity , Price)values(5,'rexona','bathsoap',50,35);
+select * from product;
+select * from product order by PRODUCT_NAME desc;
+select PRODUCT_CODE,PRODUCT_NAME from product where PRICE between 20 and 50;
+select * from product where Category in('bathsoap','paste','washing powder');
+select * from product where QUANTITY<100 or QUANTITY>500;
+select * from product where Product_Name like 's%';
+select * from product where CATEGORY!='paste';
+select * from product where PRODUCT_NAME like '_u%' and CATEGORY='washing powder';
+
+7
+create table EMPLOYE(Employee_Name varchar(20), City varchar(15));
+insert into EMPLOYE(Employee_Name,City)values('visakh','palakkad');
+insert into EMPLOYE(Employee_Name,City)values('prajith','kozhikode');
+insert into EMPLOYE(Employee_Name,City)values('jeson','trissur');
+insert into EMPLOYE(Employee_Name,City)values('midhun','banglore');
+insert into EMPLOYE(Employee_Name,City)values('akhil','cochi');
+select * from EMPLOYE;
+create table WORKS (Employee_Name varchar(20), Company_Name varchar(20), Salary int);
+insert into WORKS (Employee_Name , Company_Name , Salary)values('visakh','wipro',25000);
+insert into WORKS (Employee_Name , Company_Name , Salary)values('prajith','infosys',20000);
+insert into WORKS (Employee_Name , Company_Name , Salary)values('midhun','wipro',15000);
+insert into WORKS (Employee_Name , Company_Name , Salary)values('jeson','tcs',25000);
+insert into WORKS (Employee_Name , Company_Name , Salary)values('akhil','wipro',15000);
+select * from WORKS;
+create table COMPANY (Company_Name varchar(20), City varchar(20));
+insert into COMPANY (Company_Name , City )values('wipro','banglore');
+insert into COMPANY (Company_Name , City )values('infosys','cochi');
+insert into COMPANY (Company_Name , City )values('tcs','trissur');
+insert into COMPANY (Company_Name , City )values('xlr','palakkd');
+select * from COMPANY;
+create table MANAGES (Employee_Name varchar(20), Manager_Name varchar(20));
+insert into MANAGES (Employee_Name , Manager_Name )values('visakh','jibin');
+insert into MANAGES (Employee_Name , Manager_Name )values('midhun','meena');
+insert into MANAGES (Employee_Name , Manager_Name )values('prajith','praveen');
+insert into MANAGES (Employee_Name , Manager_Name )values('jeson','raji');
+insert into MANAGES (Employee_Name , Manager_Name )values('akhil','rasmi');
+select * from MANAGES;
+select EMPLOYEE_NAME,COMPANY_NAME from works where company_name='infosys';
+select works.EMPLOYEE_NAME,employe.CITY from employe,WORKS where employe.EMPLOYEE_NAME=works.EMPLOYEE_NAME and COMPANY_NAME='wipro';
+select works.EMPLOYEE_NAME,employe.CITY from employe,WORKS where employe.EMPLOYEE_NAME=works.EMPLOYEE_NAME and COMPANY_NAME='infosys' and salary>10000;
+select distinct works.company_name,company.CITY,employe.EMPLOYEE_NAME,employe.city from employe,company,works where employe.CITY=COMPANY.city and works.COMPANY_NAME=company.COMPANY_NAME;
+select EMPLOYEE_NAME,COMPANY_NAME from works where COMPANY_NAME!='wipro' ;
+SELECT COMPANY_NAME, count(*) as NUM FROM WORKS GROUP BY COMPANY_NAME;
+
+
+8
+create table supplier(supcode varchar(4) primary key,sname varchar(20),city varchar(10));
+create table products(pcode varchar(4) primary key,pname varchar(20));
+create table supl_product ( supcode varchar(4),pcode varchar(4),qty number(5),constraint fk_supplier foreign key(supcode) references supplier(supcode),constraint fk_product foreign key (pcode) references products(pcode));
+insert into supplier values('s1','ani','chennai');
+insert into supplier values('s2','raman','pune');
+insert into supplier values('s3','sreelakshmi','sikkim');
+insert into supplier values('s4','vishnu','goa');
+insert into supplier values('s5','manu','pune');
+insert into supplier values('s6','vinu','sikkim');
+insert into supplier values('s7','kiran','chennai');
+insert into supplier values('s8','mithun','thirupur');
+select * from supplier;
+insert into products values('p1','cup');
+insert into products values('p2','soap');
+insert into products values('p3','paste');
+insert into products values('p4','book');
+insert into products values('p5','file');
+insert into products values('p6','pen');
+insert into products values('p7','pencil');
+select * from products;
+insert into supl_product values('s1','p1',40);
+insert into supl_product values('s2','p2',20);
+insert into supl_product values('s5','p1',20);
+insert into supl_product values('s3','p4',10);
+insert into supl_product values('s4','p3',20);
+insert into supl_product values('s1','p6',30);
+insert into supl_product values('s6','p6',20);
+insert into supl_product values('s4','p7',10);
+insert into supl_product values('s7','p5',10);
+insert into supl_product values('s7','p5',10);
+insert into supl_product values('s5','p2',30);
+select * from supl_product;
+select city,count(supcode) from supplier group by city;
+select supcode,sname from supplier where supcode=any(select supcode from supl_product where pcode='p2');
+create view pro_sum as select pcode,count(pcode) as total from supl_product group by pcode;
+select * from pro_sum where total >1;
+select sname from supplier where city=(select city from supplier where supcode='s1');
+select sname,supcode from supplier where supcode = Any (select supcode from supl_product where pcode='p1');
+select supcode from supplier where supcode =any (select supcode from supl_product);
+select pcode, sum(qty)from supl_product group by pcode;
+
+9
+create table salaries(empno varchar(5),name varchar(20),basic number(10,2));
+insert into salaries values('e001','gana',10000);
+insert into salaries values('e002','rahul',12000);
+insert into salaries values('e003','madhu',188000);
+insert into salaries values('e004','sani',18000);
+insert into salaries values('e005','asha',20000);
+insert into salaries values('e006','kiran',90000);
+insert into salaries values('e007','amal',30000);
+insert into salaries values('e008','biju',770000);
+insert into salaries values('e009','salim',60000);
+insert into salaries values('e0010','veena',80000);
+select * from salaries;
+declare
+cursor c2 is select * from salaries;
+empsalary salaries%rowtype;
+da number;
+gross_salary number;
+pf number;
+netsalary number;
+annual_salary number;
+tax number;
+begin
+open c2;
+loop
+fetch c2 into empsalary;
+exit when c2%notfound;
+if c2%found then
+da := empsalary.basic*0.4;
+pf := empsalary.basic*0.1;
+gross_salary := empsalary.basic+da;
+netsalary := gross_salary-pf;
+annual_salary :=netsalary*12;
+if annual_salary<100000 then 
+tax := 0;
+elsif annual_salary<=150000 then
+tax:=(annual_salary-100000)*0.1;
+elsif annual_salary<=250000 then
+tax:=(annual_salary-150000)*0.2;
+else
+tax:=(annual_salary-250000)*0.3;
+end if;
+dbms_output.put_line('**************************');
+dbms_output.put_line('Name :'||empsalary.name);
+dbms_output.put_line('Emp_No :'||empsalary.empno);
+dbms_output.put_line('Basic Pay :'||empsalary.basic);
+dbms_output.put_line('DA :'||da);
+dbms_output.put_line('PF :'||pf);
+dbms_output.put_line('DA :'||da);
+dbms_output.put_line('Gross Salary :'||gross_salary);
+dbms_output.put_line('Net Salary :'||netsalary);
+dbms_output.put_line('Annual Salary :'||annual_salary);
+dbms_output.put_line('Tax :'||tax);
+dbms_output.put_line('**************************');
+end if;
+end loop;
+close c2;
+end;
+/
+
+
+10
+
+create table exam_result(rollno number(4),avg_score number(3),grade char(1) null);
+insert into exam_result values(001,90,null);
+insert into exam_result values(002,95,null);
+insert into exam_result values(003,80,null);
+insert into exam_result values(004,70,null);
+insert into exam_result values(005,60,null);
+insert into exam_result values(006,50,null);
+insert into exam_result values(007,40,null);
+select * from exam_result;
+
+declare
+cursor c1 is select rollno,avg_score from exam_result;
+vrollno exam_result.rollno%type;
+vavgscore exam_result.avg_score%type;
+begin
+open c1;
+loop
+fetch c1 into vrollno,vavgscore;
+exit when c1%notfound;
+if vavgscore>=90 and vavgscore<=100 then
+update exam_result set grade ='A' where rollno=vrollno;
+elsif vavgscore>=75 and vavgscore<=89 then
+update exam_result set grade ='B' where rollno=vrollno;
+elsif vavgscore>=60 and vavgscore<=74 then
+update exam_result set grade ='C' where rollno=vrollno;
+elsif vavgscore>=50 and vavgscore<=59 then
+update exam_result set grade ='D' where rollno=vrollno;
+elsif vavgscore<=49 then
+update exam_result set grade ='E' where rollno=vrollno;
+else
+dbms_output.put_line('wrong choice');
+end if;
+end loop;
+close c1;
+end;
+/
+select * from exam_result;
+
+
+11
+
+Create table areas(radius number,area number);
+declare
+area number(5,2);
+radius number(1):=3;
+pi constant number(3,2):=3.14;
+begin
+while radius<=7
+loop
+area:=pi*radius*radius;
+insert into areas values (radius,area);
+radius:=radius+1;
+end loop;
+end;
+/
+
+select *from areas;
+
+
+
+12
+
+create table electricity(cons_id varchar(4) primary key,
+c_name varchar(20),
+rent number(2) check (rent=20),
+unit number(6));
+insert into electricity values ('E001','deepika',20,35);
+insert into electricity values ('E002','varna',20,61);
+insert into electricity values ('E003','arun',20,80);
+insert into electricity values ('E004','rahul',20,90);
+alter table electricity add (total number (6,2));
+select * from electricity;
+
+
+declare
+cursor c1 is select * from electricity;
+v_total electricity.total%type;
+begin
+for i in c1
+loop
+if(i.unit <=40)then
+v_total:=i.rent;
+elsif (i.unit<=80)then
+v_total:= i.rent+(i.unit-40)*.40;
+else
+v_total:= i.rent+(40*.40)+(i.unit-80)*1.40;
+end if;
+update electricity set total=v_total where cons_id=i.cons_id;
+end loop;
+end;
+/
+
+select * from electricity;
+
+13
+
+declare
+a number(3):=1;
+b number(3):=1;
+c number(3);
+n number(3):=:n;
+procedure fibo(n number)
+as
+begin
+Dbms_output.put_line('the fibinocci series up to....'||n||'....is');
+while a<=n
+loop
+dbms_output.put_line(a);
+c:=a+b;
+a:=b;
+b:=c;
+end loop;
+end;
+begin
+n:=:n;
+fibo(n);
+end;
+/
+
+14
+
+declare
+get_value number;
+function checkprime(no in number) return varchar is ans varchar(55);
+n number;
+begin
+if(no=2) then
+ans:='Given number is prime';
+else
+n:=no/2;
+for i in 2..n
+loop
+if(mod(no,i)=0) then
+ans:='Given number is not prime';
+exit;
+else
+ans:='Given number is prime';
+end if;
+end loop;
+end if;
+return(ans);
+end;
+begin
+get_value:=:get_value;
+dbms_output.put_line(checkprime(get_value));
+end;
+/
+
+15
+create table phonebook(pname varchar(20),mobno number(10));
+insert into phonebook values('anu',1234);
+insert into phonebook values('raju',8145);
+insert into phonebook values('anju',9045);
+insert into phonebook values('meenu',4645);
+select * from phonebook;
+
+create table del_phonebook(pname varchar(20),mobno number(10),modfy_date date);
+create trigger phone_dir
+before delete or update on phonebook
+for each row
+begin
+insert into del_phonebook values(:old.pname,:old.mobno,sysdate);
+end;
+/
+
+delete from phonebook where pname='anu';
+update phonebook set mobno='8746' where pname='anju';
+select *from del_phonebook;
+
+16
+
+create table stud_mark(regno number(5),sname varchar2(20),score1 number(4),score2 number(4),score3 number(4),score4 number(4),
+total number(5) null,avg number null,grade varchar2(20) null);
+insert into stud_mark(regno,sname,score1,score2,score3,score4)values(01,'ANU',40,45,35,40);
+insert into stud_mark(regno,sname,score1,score2,score3,score4)values(02,'kiran',30,40,35,45);
+insert into stud_mark(regno,sname,score1,score2,score3,score4)values(03,'manju',70,85,95,90);
+insert into stud_mark(regno,sname,score1,score2,score3,score4)values(04,'vinu',65,70,50,86);
+select * from stud_mark;
+
+create function gradecalculation(p in number) return char is
+g char(15);
+begin
+if p >= 70 then
+g:='Distinction';
+return g;
+elsif p >= 60 then
+g:='First class';
+return g;
+elsif p>= 50 then
+g:='Pass';
+return g;
+else
+g:='Fail';
+return g;
+end if;
+end;
+/
+declare
+cursor c_grade is select regno,sname,score1,score2,score3,score4 from stud_mark;
+no stud_mark.regno%type;
+s1 stud_mark.score1%type;
+s2 stud_mark.score2%type;
+s3 stud_mark.score3%type;
+s4 stud_mark.score4%type;
+t number;
+n stud_mark.sname%type;
+avg stud_mark.avg%type;
+g varchar2(20);
+p number;
+begin
+open c_grade;
+loop
+fetch c_grade into no,n,s1,s2,s3,s4;
+exit when c_grade%notfound;
+t:=s1+s2+s3+s4;
+p:=t/4;
+g:=gradecalculation(p);
+update stud_mark set total=t,avg=p,grade=g where regno=no;
+end loop;
+close c_grade;
+end;
+/
+
+select * from stud_mark;

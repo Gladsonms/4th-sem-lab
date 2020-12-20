@@ -1,0 +1,35 @@
+#include<stdio.h>
+#include<conio.h>
+
+void main()
+{
+int n,pos,a[50],k,i;
+clrscr();
+printf("Enter the size of the array:");
+scanf("%d",&n);
+for(i=0;i<n;i++)
+{
+printf("The element %d is :",i);
+scanf("%d",&a[i]);
+}
+printf("Enter element to be inserted in array:");
+scanf("%d",&k);
+printf("Enter position of element to be inserted in the array:");
+scanf("%d",&pos);
+for(i=n-1;i>=pos;i--)
+{
+if(i==pos)
+{
+a[i]=k;
+n++;
+break;
+}
+else
+a[i+1]=a[i];
+}
+printf("The new array is:");
+
+for(i=0;i<n;i++)
+printf (" %d ",a[i]);
+getch();
+}
