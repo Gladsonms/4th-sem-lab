@@ -1,0 +1,317 @@
+
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#define m 5
+struct node {
+
+ int n;
+ int keys[m-1];
+ struct node *p[m];
+
+	     }*root=NULL;
+
+ enum keystatus{duplicate,searchfailure,success,insertit,lesskeys};
+
+ void insert(int key);
+ void display(struct node *root,int );
+ void delnode(int x);
+ void search(int x);
+
+ enum keystatus  ins(struct node *r,int x,int  *y,struct node **u);
+ int searchpos(int x,int *key_arr,int n);
+ enum keystatus del(struct node *r,int x);
+
+
+ void main()
+ {
+  int key,choice;
+  printf("Creation of binarytree for node %d\n",m);
+  while(1)
+  {
+   printf("1.Insert");
+   printf("2.Delete");
+   printf("3.Search");
+   printf("4.Display");
+   printf("5.Quit");
+
+   printf("Enter your choice:");
+   scanf("%d",&choice);
+
+   switch(choice)
+   {
+    case 1:
+	   printf("Enter the key:");
+	   scanf("%d",&key);
+	   insert(key);
+	   break;
+    case 2:
+	   printf("Enter the key:");
+	   scanf("%d",&key);
+	   delnode(key);
+	   break;
+    case 3:
+	   printf("Enter the key:");
+	   scanf("%d",&key);
+	   search(key);
+	   break;
+    case 4:
+	   printf("Btree is:\n");
+	   display(root,0);
+	   break;
+    case 5:
+	   exit(1);
+    default:
+	    printf("Wrong choice\n");
+	    break;
+	   }
+	  }
+	//  return 0;
+	 }
+
+
+	 void insert(int key)
+	 {
+	  struct node *newnode;
+	  int upkey;
+	  enum keystatus value;
+	  value = ins(root,key,&upkey,&newnode);
+
+
+	  if(value==duplicate)   //
+	      printf("Key already available\n");
+	  if(value==insertit)
+	  {
+	   struct node *uproot=root;
+	   root=(struct node*)malloc(sizeof(struct node));
+	   root->n=1;
+	   root->keys[0]=upkey;
+	   root->p[0]=uproot;
+	   root->p[1]=newnode;
+	  }
+	}
+	  enum keystatus ins(struct node *ptr,int key,int *upkey,struct node **newnode)
+	  {
+	   struct node *newptr,*lastptr;
+	   int pos,i,n,splitpos;
+	   int newkey,lastkey;
+	   enum keystatus value;
+	   if(ptr==NULL)
+	   {
+	    *newnode=NULL;
+	    *upkey=key;
+	    return insertit;
+	   }
+	    n=ptr->n;
+	    pos=searchpos(key,ptr->keys,n);
+	    if(pos<n&&key==ptr->keys[pos])
+	    return duplicate;
+	    value=ins(ptr->p[pos],key,&newkey,&newptr);
+	    if(value!=insertit)
+	    return value;
+	    if(n<m-1)
+	    {
+	     pos=searchpos(newkey,ptr->keys,n);
+	     for(i=n;i>pos;i--)
+	     {
+
+	      ptr->keys[i]=ptr->keys[i-1];
+	      ptr->p[i+1]=ptr->p[i];
+	     }
+	     ptr->keys[pos]=newkey;
+	      ptr->p[pos+1]=newptr;
+	      ++ptr->n;
+	      return success;
+	     }
+	     if(pos==m-1)
+	     {
+	      lastkey=newkey;
+	      lastptr=newptr;
+	    }
+	    else
+	    {
+	     lastkey=ptr->keys[m-2];
+	     lastptr=ptr->p[m-1];
+	     for(i=m-2;i>pos;i--)
+	     {
+	      ptr->keys[i]=ptr->keys[i-1]; //
+	      ptr->p[i+1]=ptr->p[i];
+	     }
+	     ptr->keys[pos]=newkey;
+	     ptr->p[pos+1]=newptr;
+	    }
+	     splitpos=(m-1)/2;
+	     (*upkey)=ptr->keys[splitpos];
+	     (*newnode)=(struct node*)malloc(sizeof(struct node*));  //
+	     ptr->n=splitpos;
+	     (*newnode)->n=m-1-splitpos;
+	     for(i=0;i<(*newnode)->n;i++)
+	     {
+	      (*newnode)->p[i]=ptr->p[i+splitpos+1];
+	      if(i<(*newnode)->n-1)
+		(*newnode)->keys[i]=ptr->keys[i+splitpos+1];
+	      else
+		(*newnode)->keys[i]=lastkey;
+	     }
+	     (*newnode)->p[(*newnode)->n]=lastptr;
+	     return insertit;
+	    }
+
+
+
+	     void display(struct node *ptr,int blanks)
+	     {
+	      if(ptr)
+	      {
+	       int i;
+	       for(i=1;i<blanks;i++)
+	       printf(" ");
+	       for(i=0;i<ptr->n;i++)
+	       display(ptr->p[i],blanks+10);
+	      }
+	    }
+
+
+	     void search(int key)
+	     {
+	      int pos,i,n;
+	      struct node *ptr=root;
+	      printf("Search path:");
+	      while(ptr)
+	      {
+	       n=ptr->n;
+	       for(i=0;i<ptr->n;i++)
+	       printf("%d",ptr->keys[i]);
+	       printf("\n");
+	       pos=searchpos(keys,ptr->keys,n);
+	       if(pos<n&&key==ptr->keys[pos])
+	       {
+		printf("Key %d found in position %d of last displayed node",key,i);
+		return;
+	       }
+	       ptr=ptr->p[pos];
+	      }
+	       printf("Key %d is not available\n",key);
+	     }
+
+
+
+	      void delnode(int key)
+	      {
+	      stgruct node*uproot;
+	      enum keystatus value;
+	      value=del(root,key);
+	      switch(value)
+	      {
+	       case searchfailure:printf("Key %dis not available",keys);
+				  break;
+	       case lesskeys:uproot=root;
+		    root=root->p[0];
+		    free(uproot);
+		    break;
+	     }
+	     }
+	      enum keystatus del(struct node *ptr,int key)
+	      {
+	       int pos,i,pivot,n,min;
+	       inr *key_arr;
+	       enum keystatus value;
+	       struct node **p,*ptr,**ptr;
+	       if(ptr==NULL)
+	       return searchfailure;
+	       n=ptr->n;
+	       key_arr=ptr->keys;
+	       p=ptr->p;
+	       min(m-1)/2;
+	       pos=searchpos(key,key_arr,n);
+	       if(p[0]==NULL)
+	       {
+	       if(pos==n||key<key_arr[pos])
+		  return searchfailure;
+	       for(i=pos+1;i<n;i++)
+	       {
+		key_arr[i-1]=key_arr[i];
+		p[i]=p[i+1];
+	       }
+		return --ptr->n=(ptr==root?1:min)?success:lesskeys;
+	       }
+	       if(pos<n&&key==key_arr[pos])
+	       {
+		struct node *qp=p[pos],*qp1;
+		int nkey;
+		while(1)
+		{
+		 nkey=qp->n;
+		 qp1=qp->p[nkey];
+		 if(qp1==NULL)
+		 break;
+		 qp=qp1;
+		}
+		key_arr[pos]=qp->keys(nkeys-1);
+		qp->keys[nkeys-1]=key;
+	       }
+		value=del(p[pos],key);
+	       if(value!=lesskeys)
+		return value;
+	       if(pos>0&&p[pos-1]->n>min)
+	       {
+		pivot=pos-1;
+		lptr=p[pivot];
+		rptr=p[pos];
+		rptr->p[rptr->n+1]=rptr->p[rptr->n];
+		for(i=rptr->n;i>0;i--)
+		{
+		 rptr->keys[i]=rptr->key[i-1];
+		 rptr->p[i]=rptr->p[i-1];
+	       }
+		rptr->n++;
+		rptr->keys[0]=key_arr[pivot];
+		rptr->p[0]=lptr->p[lptr->n];
+		key_arr[pivot]=lptr->keys[--lptr->n];
+		return success;
+	       }
+		if(pos<n&&p[pos+1]->n>min)
+		{
+		 pivot=pos;
+		 lptr=p[pivot];
+		 rptr=p[pivot+1];
+		 lptr->keys[lptr->n]=key_arr[pivot];
+		 lptr->p[lptr->n+1]=rptr->p[0];
+		 key_arr[pivot]=rptr->keys[0];
+		 lptr->n++;
+		 rptr->n--;
+		 for(i=0;i<rptr->mi++)
+		 {
+		 rptr->keys[i]=rptr->keys[i+1];
+		 rptr->p[i]=rptr->p[i+1];
+		 }
+		  rptr->p[rptr->n]=rptr->p[rptr->n+1];
+		  return success;
+		 }
+		  if(pos==n)
+		   pivot=pos-1;
+		  else
+		   pivot=pos;
+		  lptr=p[pivot];
+		  rptr=p[pivot+1];
+		  lptr->keys[lptr->n]=key_arr[pivot];
+		  lptr->p[lptr->n+1]=rptr->p[0];
+		  for(i=0;i<rptr->n;i++)
+		  {
+		   lptr->keys[lptr->n+1-i]=rptr->keys[i];
+		   lptr->p[lptr->n+2+i]=rptr->p[i+1];
+		  }
+		   lptr->n=lptr->n+rpptr->n+1;
+		   free(rptr);
+		   for(i=pos++1;i<n;i++)
+		   {
+		   key_arr[i-1]=key_arr[i];
+		   p[i]=p[i+1];
+		  }
+
+		  }
+		   return --ptr->n>=(ptr==root?1:min)?success:lesskeys;
+		}
+
+
+

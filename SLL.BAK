@@ -1,0 +1,145 @@
+#include<stdio.h>
+#include<conio.h>
+#include<malloc.h>
+struct node
+{
+int info;
+struct node *link;
+}
+*start;
+main()
+{
+int choice,m,n,position,i;
+start=NULL;
+while(i)
+{
+printf("1.create list\n2.Odd at beginning\n3.add after\n4.delete\n5.display\n6.quit\n");
+printf("Enter your choice:");
+scanf("%d",&choice);
+switch(choice)
+{
+case1:printf("How many nodes you want:");
+for(i=0;i<n;i++)
+{
+printf("Enter the elements:");
+scanf("%d",&m);
+create list(m);
+}
+break;
+case 2:
+printf("Enter the elements:");
+scanf("%d",&m);
+add at beg(m);
+break;
+case 3:
+printf("Enter the elements:");
+scanf("%d",&m);
+printf("Enter the position after which this element is inserted");
+scanf("%d",&position);
+addafter(m,position);
+break;
+case 4:
+if(start=NULL)
+{
+printf("List is empty");
+continue;
+}
+printf("Enter elements for deletion:");
+scanf("%d",&m);
+del(m);
+break;
+case 5:
+dispaly();
+break;
+case 6:
+exit();
+default:printf("wrong choice");
+}
+}
+}
+create_list(int data)
+{
+struct node*q,*temp;
+temp=mallox(size(struct code));
+tmp->link=NULL;
+(struct==NULL)
+start=tmp;
+else
+{
+q=start;
+while(q->link!=NULL)
+q=q->link;
+q->link=tmp;
+}
+}
+add at beg(int data)
+{
+struct+node*tmp;
+tmp=malloc(size of(struct node));
+tmp->info=data;
+tmp->link=start;
+start=tmp;
+}
+add after(int data,int POS)
+{
+struct node*temp,*q;
+int i;
+q=start;
+for(i=0;i<pos;i++)
+{
+q=q->link;
+if(q==NULL)
+{
+printf("There are less than %d elements",pos);
+return;
+}
+}
+tmp=malloc(size of(struct+node));
+tmp->link=q->link;
+tmp->info=data;
+q->link=tmp;
+}
+del(int data)
+{
+struct node *tmp,*q;
+if(start->info==data)
+{
+tmp=start;
+start=start->link;
+free(tmp);
+return;
+}
+q=start;
+while(q->link->link!=NULL)
+{
+if(q->link->info==data)
+{
+tmp=q->link;
+q->link=tmp->link;
+free(tmp);
+return;
+}
+q=q->link;
+}
+if(q->link->info==data)
+{
+temp=q->link;
+free(tmp);
+q->link=NULL;
+return;
+}
+printf("Element %d not found\n",data):
+}
+display()
+{
+struct node *q;
+if(start==NULL)
+{
+printf("list is empty \n");
+return;
+}
+}
+printf("\n");
+}
+
+

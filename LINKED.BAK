@@ -1,0 +1,229 @@
+#include<stdio.h>
+#include<malloc.h>
+struct node
+{
+int info;
+struct node*link;
+}*start;
+main()
+{
+int choice,n,m,position,i;
+start=NULL;
+while(1)
+{
+printf("1 creat list \n");
+printf("2 add at beginning \n");
+printf("3 add after \n");
+printf("4 delect \n");
+printf("5 display \n");
+printf("6 count \n");
+printf("7 reverse \n");
+printf("8 search \n");
+printf("9 quit \n");
+printf("enter year choice");
+scanf("%d",&choice);
+switch(choice)
+{
+case 1:
+printf("how many nodes you want:");
+scanf("%d",&n);
+for(i=0;i<n;i++)
+{
+printf("enter the element:");
+scanf("%d",&m);
+create_list(m);
+}
+break;
+case 2:
+printf("enter the element:");
+scanf("%d",&m);
+addatbeg(m);
+break;
+case 3:
+printf("enter the elements:");
+scanf("%d",&m);
+printf("enter the position after which this elemets is inverted");
+scanf("%d",&position);
+addafter(m,position);
+break;
+case 4:
+if(start==NULL)
+{
+printf("list is empty \n");
+continue;
+}
+printf("enter the element for delection");
+scanf("%d",&m);
+del(m);
+break;
+case 5:
+display();
+break;
+case 6:
+count();
+break;
+case 7:
+rev();
+break;
+case 8:
+printf("enter the element to be search:");
+scanf("%d",&m);
+search(m);
+break;
+case 9:
+exit();
+default:
+printf("wrong choice \n");
+}
+}
+}
+create_list(int data)
+{
+struct node*q,*tmp;
+tmp=malloc(sizeof (struct node));
+tmp->info=data;
+tmp->link=NULL;
+if(start==NULL)
+start=tmp;
+else
+{
+q=start;
+while(q->link!=NULL)
+q->link=tmp;
+}
+return;
+}
+addatbeg(int data)
+{
+struct node*tmp;
+tmp=malloc(sizeof (struct node));
+tmp->info=data;
+tmp->link=start;
+start=tmp;
+return;
+}
+addafter(int data,int pos)
+{
+struct node*tmp,*q;
+int i;
+q=start;
+for(i=0;i<pos-1;i++)
+{
+q=q->link;
+if(q==NULL)
+{
+printf("these are less than elements",pos);
+return;
+}
+}
+tmp=malloc(sizeof(struct node));
+tmp->link=q->link;
+tmp->info=data;
+q->link=tmp;
+return;
+}
+del(int data)
+{
+struct node*tmp,*q;
+if(start->info==data)
+{
+tmp=start;
+start=start->link;
+free(tmp);
+return;
+}
+q=start;
+while(q->link->link!=NULL)
+{
+if(q->info==data)
+{
+tmp=q->link;
+q->link=tmp->link;
+free(tmp);
+return;
+}
+q=q->link;
+}
+if(q->link->info==data)
+{
+tmp=q->link;
+free(tmp);
+q->link=NULL;
+}
+printf("elements %d  not found \n",data);
+return;
+}
+display()
+{
+struct node*q;
+if(start==NULL)
+{
+printf("list is empty \n");
+return;
+}
+q=start;
+printf("list is : \n");
+while(q!=NULL)
+{
+printf("%d",q->info);
+q=q->link;
+}
+printf("\n");
+return;
+}
+count()
+{
+struct node*q=start;
+int cnt=0;
+while(q!=NULL)
+{
+q=q->link++;
+cnt++;
+}
+printf("number of elements are %d \n",cnt);
+return;
+}
+rev()
+{
+struct node*p1,*p2,*p3;
+if(start->link==NULL)
+return;
+p1=start;
+p2=p1->link;
+p3=p2->link;
+p1->link=NULL;
+p2->link=p1;
+while(p3!=NULL)
+{
+p1=p2;
+p2=p3;
+p3=p3->link;
+p2->link=p1;
+}
+start=p2;
+return;
+}
+search(int data)
+{
+struct node*ptr=start;
+int pos=1;
+while(ptr!=NULL)
+{
+if(ptr->info==data)
+{
+printf("item %d found at position %d \n",data,pos);
+return;
+}
+ptr=ptr->link;
+pos++;
+}
+if(ptr==NULL)
+printf("item %d not found in list \n,data");
+getch();
+return;
+}
+
+
+
+
+

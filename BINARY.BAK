@@ -1,0 +1,33 @@
+#include<stdio.h>
+#include<conio.h>
+void main()
+{
+int a[100],i,n,first=0,mid,last,search;
+clrscr();
+printf("\n enter the number of elements:");
+scanf("%d",&n);
+printf("\n enter the integers:");
+for(i=0;i<n;i++)
+scanf("\n %d",&a[i]);
+printf("\n enter the value to find:");
+scanf("%d",&search);
+first=0;
+last=n-1;
+mid=(first+last)/2;
+while(first<=last)/2;
+{
+if(a[mid]<search)
+first=mid+1;
+if(a[mid]==search)
+{
+printf("%d found at location %d \n",search,mid+1);
+break;
+}
+else
+last=mid-1;
+mid=(first+last)/2;
+}
+if(first>last)
+printf("\n %d not found\n",search);
+getch();
+}

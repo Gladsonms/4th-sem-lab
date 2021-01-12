@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<conio.h>
+int a[100];
+void main()
+
+{
+ int i,n;
+ clrscr();
+ printf("Enter the size of the array:");
+ scanf("%d",&n);
+ printf("Enter the elements to the array:");
+ for(i=0;i<n;i++)
+ {
+  scanf("%d",&a[i]);
+ }
+ printf("The elements are:\n");
+ for(i=0;i<n;i++)
+ {
+  printf("%d ",a[i]);
+ }
+ printf("\nAfter deletion of last element:");
+ for(i=0;i<n-1;i++)
+ {
+  printf("%d ",a[i]);
+ }
+ getch();
+}

@@ -1,0 +1,14 @@
+#include<stdio.h>
+#include<conio.h>
+void main()
+{
+ int stk[10],i;
+ clrscr();
+
+ printf("Enter 10 numbers:");
+ for(i=0;i<10;i++)
+  {
+  scanf("%d",&stk[i]);
+  }
+getch();
+}

@@ -1,0 +1,52 @@
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+int match(char[],char[]);
+void main()
+{
+char a[100],b[100];
+int pos;
+printf("\n enter some text");
+gets(a);
+pos=match(a,b);
+if(pos!=-1)
+{
+printf("\n element found: %d",pos+1);
+}
+else
+{
+printf("\n element not found");
+}
+getch();
+}
+int match(char text[],char pattern[]);
+{
+int c,d,e,text_lenght,pattern_lenght,pos=-1;
+text_lenght=strlen(text);
+pattern_length=strlen(pattern);
+if(pattern_lenght>text_lenght)
+{
+return -1;
+}
+for(c=0;c<=text_length-pattern_length;c++)
+{
+pos=e=c;
+for(d=0;d<patten_lenght;d++)
+{
+if(pattern[d]===ttext[e])
+{
+e++;
+}
+else
+{
+break;
+}
+}
+if(d==pattern_lenght)
+{
+return pos;
+}
+}
+return -1;
+}
+

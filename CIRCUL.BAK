@@ -1,0 +1,196 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+struct node
+{
+int info;
+struct node *link;
+}*last;
+
+void display();
+void del(int);
+void addafter(int,int);
+void addatbeg(int);
+void create_list(int);
+
+void main()
+{
+int ch,n,m,po,i;
+clrscr();
+
+last=NULL;
+
+printf("\t\t\tCIRCULAR LINKED LIST\n");
+
+while(1)
+{
+printf("\n\n---MENU---\n");
+printf("1.Create List\n");
+printf("2.Add at Beginning\n");
+printf("3.Add after\n");
+printf("4.Delete\n");
+printf("5.Display\n");
+printf("6.Quit\n");
+printf("Enter your choice :");
+scanf("%d",&ch);
+switch(ch)
+{
+case 1:
+printf("\nHow many nodes you want :");
+scanf("%d",&n);
+for(i=0;i<n;i++)
+{
+printf("\nEnter the elements : ");
+scanf("%d",&m);
+create_list(m);
+}
+break;
+
+case 2:
+printf("\nEnter the element: ");
+scanf("%d",&m);
+addatbeg(m);
+break;
+
+case 3:
+printf("\nEnter the element : ");
+scanf("%d",&m);
+printf("\nEnter the position after:");
+scanf("%d",&po);
+addafter(m,po);
+break;
+
+case 4:
+if(last==NULL)
+{
+printf("\nList is Empty\n");
+continue;
+}
+printf("\nEnter number for deletion :");
+scanf("%d",&m);
+del(m);
+break;
+
+case 5:
+display();
+break;
+
+case 6:
+exit(0);
+
+default:
+printf("\nWrong choice ");
+}
+}
+}
+
+void create_list(int num)
+{
+struct node *q,*tmp;
+tmp=(struct node*)malloc(sizeof(struct node));
+tmp->info=num;
+if(last==NULL)
+{
+last=tmp;
+tmp->link=last;
+}
+else
+{
+tmp->link=last->link;
+last->link=tmp;
+last=tmp;
+}
+}
+
+void addafter(int num,int pos)
+{
+struct node *tmp,*q;
+int i;
+q=last->link;
+for(i=0;i<pos-1;i++)
+{
+q=q->link;
+if(q==last->link)
+{
+printf("\nThere are less than %dd elements",pos);
+return;
+}
+}
+tmp=(struct node*)malloc(sizeof(struct node));
+tmp->link=q->link;
+tmp->info=num;
+q->link=tmp;
+if(q==last)
+{
+last=tmp;
+}
+}
+
+
+void addatbeg(int num)
+{
+struct node *tmp;
+tmp=(struct node*)malloc(sizeof(struct node));
+tmp->info=num;
+tmp->link=last->link;
+last->link=tmp;
+}
+
+void del(int num)
+{
+struct node *tmp,*q;
+if(last->link==last&&last->info==num)
+{
+tmp=last;
+last=NULL;
+free(tmp);
+return;
+}
+q=last->link;
+if(q->info==num)
+{
+tmp=q;
+last->link=q->link;
+free(tmp);
+return;
+}
+while(q->link!=last)
+{
+if(q->link->info==num)
+{
+tmp=q->link;
+q->link=tmp->link;
+free(tmp);
+printf("\n%d Deleted",num);
+return;
+}
+q=q->link;
+}
+if(q->link->info==num)
+{
+tmp=q->link;
+q->link=last->link;
+free(tmp);
+last=q;
+return;
+}
+printf("\nElement %d not found \n",num);
+}
+
+void display()
+{
+struct node *q;
+if(last==NULL)
+{
+printf("\nList is empty");
+return;
+}
+q=last->link;
+printf("\nList is :\n");
+while(q!=last)
+{
+printf("%d ",q->info);
+q=q->link;
+}
+printf("%d ",last->info);
+}

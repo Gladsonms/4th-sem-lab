@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+char*replace_str(char*str,char*orig,char*rep)
+{
+static char buffer[4096];
+char*p;
+if(!(p=strstr(str,orig)))
+return str;
+strncpy(buffer,str,p-str);
+buffer[p-str]="";
+sprintf(buffer+(p-str),"%s%s",rep,p+strlen(orig));
+return buffer;
+}
+int main(void)
+{
+char string[100],str1[50],str2[50];
+printf("Enter a one line string to be replaced...\n");
+gets(str2);
+printf("Enter a sub string to be replaced \n");
+gets(str1);
+printf("\n enter the replacing string...");
+gets(str2);
+printf("final string output is...\n");
+puts(replace_str(str,str1,str2));
+return 0;
+}

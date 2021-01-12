@@ -1,0 +1,43 @@
+#include<stdio.h>
+#include <math.h>
+void main()
+{
+FILE*all,*even,*odd;
+int number,i,records;
+clrscr();
+printf("ENTER THE TOTAL NUMBERS OF RECORDS THAT U WANT TO ENTER");
+scanf("%d",&records);
+printf("Enter numbers");
+all=fopen("ANY NUMBER","w");
+ for(i=1;i<=records;i++)
+ {
+  scanf("%d",&number);
+  if(number==-1)break;
+  putw(number,all);
+  }
+   fclose(all);
+   all=fopen("ANYNUMBER","r");
+   even=fopen("EVEN NUMBER","w");
+   odd=fopen("ODD NUMBER","w");
+  while(number=getw(all)!=EOF)
+   {
+    if(number%==0)
+    putw(number,even);
+    else
+    putw(number,odd);
+    }
+    fclose(all);
+    fclose(even);
+    fclose(odd);
+    even=fopen("EVEN NUMBER","r");
+    odd=fopen("ODD NUMBER","r");
+    printf("THE EVEN NUMBERS ARE");
+  while(number=getw(even))!=EOF
+  printf("\n %d",number);
+  printf("THE ODD NUMBERS ARE");
+  while(number=getw(odd)!=EOF
+  printf("\n%d\n",number);
+  fclose(even);
+  fclose(odd);
+  getch();
+  }
